@@ -1,27 +1,36 @@
+#include "include/AppState.hpp"
+#include "include/ComponentFactories.hpp"
+#include <ftxui/component/component.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
+#include <ftxui/component/app.hpp>
 
 int main() {
-  using namespace ftxui;
+    using namespace ftxui;
 
-  // Define the document structure
-  Element document = vbox({
-    text("FTXUI Getting Started") | bold | center,
-    separator(),
-    hbox({
-      text("Left Panel") | border,
-      vbox({
-        text("Main Content Area") | flex,
-        separator(),
-        text("Footer Information") | dim,
-      }) | border | flex,
-    }) | flex,
-  });
+    auto state = AppState::makeDefault();
+    auto checklist = ComponentFactories::makeChecklist(state.warframeNames, state.checkedWarframes);
 
-  // Create the screen and render
-  auto screen = Screen::Create(Dimension::Full(), Dimension::Fit(document));
-  Render(screen, document);
-  screen.Print();
+    auto layout = Container::Vertical({
 
-  return 0;
+            Renderer([] {
+                    return text("Warframe Randomizer") | bold | center;
+                    }),
+
+            Renderer([] {
+                    return separator();
+                    }),
+
+            checklist
+
+    });
+
+    auto renderer = Renderer(layout, [&] {
+            return layout->Render() | vscroll_indicator | frame;
+            });
+    auto screen = App::FitComponent();
+
+    screen.Loop(renderer);
+
+    return 0;
 }
