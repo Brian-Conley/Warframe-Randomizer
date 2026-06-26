@@ -1,36 +1,97 @@
 #include "include/AppState.hpp"
 #include "include/ComponentFactories.hpp"
+#include <array>
 #include <ftxui/component/component.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/component/app.hpp>
+#include <random>
+#include <vector>
+
+void toggleAllOff(std::array<bool, 65>& states);
+void toggleAllOn(std::array<bool, 65>& states);
+int randomize(std::array<bool, 65>& states);
 
 int main() {
     using namespace ftxui;
 
     auto state = AppState::makeDefault();
     auto checklist = ComponentFactories::makeChecklist(state.warframeNames, state.checkedWarframes);
+    auto controlHints = ComponentFactories::makeControlHints();
+    auto output = ComponentFactories::makeOutputText(state.warframeNames, state.randomizedIndex);
 
-    auto layout = Container::Vertical({
-
-            Renderer([] {
-                    return text("Warframe Randomizer") | bold | center;
-                    }),
-
-            Renderer([] {
-                    return separator();
-                    }),
-
-            checklist
-
-    });
-
-    auto renderer = Renderer(layout, [&] {
-            return layout->Render() | vscroll_indicator | frame;
-            });
     auto screen = App::FitComponent();
 
-    screen.Loop(renderer);
+    auto layout = Renderer(checklist, [&] {
+        return vbox({
+            text("Warframe Randomizer") | bold | center,
+            separator(),
+            hbox({
+                checklist->Render(),
+                vbox({
+                    controlHints->Render(),
+                    output->Render()
+                }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 30)
+            })
+        });
+    });
+
+    auto root = CatchEvent(layout, [&](Event event) {
+        if (event == Event::Character('r')) {
+            state.randomizedIndex = randomize(state.checkedWarframes);
+            return true;
+        }
+
+        if (event == Event::Character('q')) {
+            screen.ExitLoopClosure()();
+            return true;
+        }
+
+        if (event == Event::Character('a')) {
+            toggleAllOn(state.checkedWarframes);
+            return true;
+        }
+
+        if (event == Event::Character('n')) {
+            toggleAllOff(state.checkedWarframes);
+            return true;
+        }
+
+        return false;
+    });
+
+    screen.Loop(Renderer(root, [&] {
+                return root->Render() | vscroll_indicator | frame;
+                }));
 
     return 0;
+}
+
+void toggleAllOff(std::array<bool, 65>& states) {
+    for (size_t i = 0; i < 65; ++i)
+        states[i] = false;
+}
+
+void toggleAllOn(std::array<bool, 65>& states) {
+    for (size_t i = 0; i < 65; ++i)
+        states[i] = true;
+}
+
+int randomize(std::array<bool, 65>& states) {
+    std::vector<int> enabledFrames = {};
+    for (int i = 0; i < 65; ++i) {
+        if (states[i]) {
+            enabledFrames.push_back(i);
+        }
+    }
+
+    if (enabledFrames.size() == 0) {
+        return -1;
+    }
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, enabledFrames.size() - 1);
+
+    return enabledFrames[dist(gen)];
 }

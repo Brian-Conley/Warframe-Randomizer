@@ -79,6 +79,8 @@ namespace AppState {
 
         state.selectedWarframe = 0;
 
+        state.randomizedIndex = -1;
+
         return state;
     }
 
