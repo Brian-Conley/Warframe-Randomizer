@@ -40,12 +40,6 @@ namespace ComponentFactories {
     }
 
     Component makeOutputText(std::array<std::string_view, 65>& names, int& idx) {
-        /*
-        return Renderer([&] {
-                return text( idx == -1 ? "None" : names[idx] ) | bold;
-                });
-        */
-
         return Renderer([&] {
                 return window(
                         text("Warframe"),
