@@ -26,12 +26,13 @@ int main() {
         return vbox({
             text("Warframe Randomizer") | bold | center,
             separator(),
-            hbox({
-                checklist->Render(),
-                vbox({
-                    controlHints->Render(),
-                    output->Render()
-                }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 30)
+            vbox({
+                hbox({
+                    controlHints->Render() | size(ftxui::WIDTH, ftxui::GREATER_THAN, 22),
+
+                    output->Render() | size(ftxui::HEIGHT, ftxui::GREATER_THAN, 8)
+                }), //| size(ftxui::WIDTH, ftxui::GREATER_THAN, 60),
+                checklist->Render()
             })
         });
     });
