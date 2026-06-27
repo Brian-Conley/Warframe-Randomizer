@@ -29,9 +29,8 @@ int main() {
             separator(),
             vbox({
                 hbox({
-                    controlHints->Render() | size(ftxui::WIDTH, ftxui::GREATER_THAN, 22),
-
-                    output->Render() | size(ftxui::HEIGHT, ftxui::GREATER_THAN, 8)
+                    controlHints->Render() | size(ftxui::WIDTH, ftxui::GREATER_THAN, 24),
+                    output->Render() | size(ftxui::WIDTH, GREATER_THAN, 18)
                 }), //| size(ftxui::WIDTH, ftxui::GREATER_THAN, 60),
                 checklist->Render()
             })
@@ -56,6 +55,106 @@ int main() {
 
         if (event == Event::Character('n')) {
             toggleAllOff(state.checkedWarframes);
+            return true;
+        }
+
+        if (event == Event::Character('1')) {
+            AppState::loadState(state, 1);
+            return true;
+        }
+
+        if (event == Event::Character('!')) {
+            AppState::saveState(state, 1);
+            return true;
+        }
+
+        if (event == Event::Character('2')) {
+            AppState::loadState(state, 2);
+            return true;
+        }
+
+        if (event == Event::Character('@')) {
+            AppState::saveState(state, 2);
+            return true;
+        }
+
+        if (event == Event::Character('3')) {
+            AppState::loadState(state, 3);
+            return true;
+        }
+
+        if (event == Event::Character('#')) {
+            AppState::saveState(state, 3);
+            return true;
+        }
+
+        if (event == Event::Character('4')) {
+            AppState::loadState(state, 4);
+            return true;
+        }
+
+        if (event == Event::Character('$')) {
+            AppState::saveState(state, 4);
+            return true;
+        }
+
+        if (event == Event::Character('5')) {
+            AppState::loadState(state, 5);
+            return true;
+        }
+
+        if (event == Event::Character('%')) {
+            AppState::saveState(state, 5);
+            return true;
+        }
+
+        if (event == Event::Character('6')) {
+            AppState::loadState(state, 6);
+            return true;
+        }
+
+        if (event == Event::Character('^')) {
+            AppState::saveState(state, 6);
+            return true;
+        }
+
+        if (event == Event::Character('7')) {
+            AppState::loadState(state, 7);
+            return true;
+        }
+
+        if (event == Event::Character('&')) {
+            AppState::saveState(state, 7);
+            return true;
+        }
+
+        if (event == Event::Character('8')) {
+            AppState::loadState(state, 8);
+            return true;
+        }
+
+        if (event == Event::Character('*')) {
+            AppState::saveState(state, 8);
+            return true;
+        }
+
+        if (event == Event::Character('9')) {
+            AppState::loadState(state, 9);
+            return true;
+        }
+
+        if (event == Event::Character('(')) {
+            AppState::saveState(state, 9);
+            return true;
+        }
+
+        if (event == Event::Character('0')) {
+            AppState::loadState(state, 10);
+            return true;
+        }
+
+        if (event == Event::Character(')')) {
+            AppState::saveState(state, 10);
             return true;
         }
 

@@ -35,6 +35,8 @@ namespace ComponentFactories {
                     hbox({ text("a"),              filler(), text("Toggle all on") }),
                     hbox({ text("n"),              filler(), text("Toggle all off") }),
                     hbox({ text("q"),              filler(), text("Quit") }),
+                    hbox({ text("num"),            filler(), text("Load preset") }),
+                    hbox({ text("shift+num"),      filler(), text("Save preset") }),
                 })
             );
         });

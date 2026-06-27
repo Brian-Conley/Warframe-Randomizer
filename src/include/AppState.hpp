@@ -14,6 +14,9 @@ namespace AppState {
 
     AppState makeDefault();
 
+    void saveState(AppState& state, int slot);
+    void loadState(AppState& state, int slot);
+
 }
 
 

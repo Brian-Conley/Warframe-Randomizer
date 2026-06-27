@@ -6,6 +6,7 @@
 
 namespace Warframes {
     constexpr int WARFRAME_COUNT = 65;
+    constexpr int WARFRAME_BYTES = (WARFRAME_COUNT + 7) / 8;
 
     constexpr std::array<std::string_view, WARFRAME_COUNT> WARFRAMES = {
         "Ash               ",
