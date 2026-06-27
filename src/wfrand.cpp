@@ -1,5 +1,6 @@
 #include "include/AppState.hpp"
 #include "include/ComponentFactories.hpp"
+#include "include/Warframes.hpp"
 #include <array>
 #include <ftxui/component/component.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -8,9 +9,9 @@
 #include <random>
 #include <vector>
 
-void toggleAllOff(std::array<bool, 65>& states);
-void toggleAllOn(std::array<bool, 65>& states);
-int randomize(std::array<bool, 65>& states);
+void toggleAllOff(std::array<bool, Warframes::WARFRAME_COUNT>& states);
+void toggleAllOn(std::array<bool, Warframes::WARFRAME_COUNT>& states);
+int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states);
 
 int main() {
     using namespace ftxui;
@@ -68,19 +69,19 @@ int main() {
     return 0;
 }
 
-void toggleAllOff(std::array<bool, 65>& states) {
-    for (size_t i = 0; i < 65; ++i)
+void toggleAllOff(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
+    for (size_t i = 0; i < Warframes::WARFRAME_COUNT; ++i)
         states[i] = false;
 }
 
-void toggleAllOn(std::array<bool, 65>& states) {
-    for (size_t i = 0; i < 65; ++i)
+void toggleAllOn(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
+    for (size_t i = 0; i < Warframes::WARFRAME_COUNT; ++i)
         states[i] = true;
 }
 
-int randomize(std::array<bool, 65>& states) {
+int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
     std::vector<int> enabledFrames = {};
-    for (int i = 0; i < 65; ++i) {
+    for (int i = 0; i < Warframes::WARFRAME_COUNT; ++i) {
         if (states[i]) {
             enabledFrames.push_back(i);
         }

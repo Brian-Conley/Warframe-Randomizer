@@ -1,4 +1,5 @@
 #include "include/ComponentFactories.hpp"
+#include "include/Warframes.hpp"
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -8,12 +9,12 @@ namespace ComponentFactories {
 
     using namespace ftxui;
 
-    Component makeChecklist(std::array<std::string_view, 65>& names,
-                            std::array<bool, 65>& checked) {
+    Component makeChecklist(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names,
+                            std::array<bool, Warframes::WARFRAME_COUNT>& checked) {
 
         std::vector<Component> columns;
         columns.reserve(7);
-        for (size_t i = 0; i < 65; ++i) {
+        for (size_t i = 0; i < Warframes::WARFRAME_COUNT; ++i) {
             if (i % 12 == 0)
                 columns.push_back(Container::Vertical({}));
 
@@ -39,7 +40,7 @@ namespace ComponentFactories {
         });
     }
 
-    Component makeOutputText(std::array<std::string_view, 65>& names, int& idx) {
+    Component makeOutputText(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, int& idx) {
         return Renderer([&] {
                 return window(
                         text("Warframe"),
