@@ -18,8 +18,7 @@ namespace AppState {
         for (size_t i = 0; i < Warframes::WARFRAME_COUNT; ++i)
             state.checkedWarframes[i] = false;
 
-        state.randomizedIndex = -1;
-        state.randomized3 = { -1, -1, -1 };
+        state.randomizedIndex = { -1, -1, -1 };
 
         return state;
     }
@@ -78,8 +77,7 @@ namespace AppState {
         if (file.gcount() != static_cast<std::streamsize>(preset.size()))
             return;
 
-        state.randomizedIndex = -1;
-        state.randomized3 = { -1, -1, -1 };
+        state.randomizedIndex = { -1, -1, -1 };
         for (int i = 0; i < Warframes::WARFRAME_COUNT; ++i)
             state.checkedWarframes[i] = getBit(preset, i);
     }

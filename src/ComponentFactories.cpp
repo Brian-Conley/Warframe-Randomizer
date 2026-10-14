@@ -32,6 +32,7 @@ namespace ComponentFactories {
                     hbox({ text("h/j/k/l/Arrows"), filler(), text("Move") }),
                     hbox({ text("Space"),          filler(), text("Toggle") }),
                     hbox({ text("r"),              filler(), text("Randomize") }),
+                    hbox({ text("shift+r"),        filler(), text("Randomize 3") }),
                     hbox({ text("a"),              filler(), text("Toggle all on") }),
                     hbox({ text("n"),              filler(), text("Toggle all off") }),
                     hbox({ text("q"),              filler(), text("Quit") }),
@@ -42,25 +43,17 @@ namespace ComponentFactories {
         });
     }
 
-    Component makeOutputText(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, int& idx) {
+    Component makeOutputText(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, const std::array<int, 3>& idx) {
         return Renderer([&] {
                 return window(
                         text("Warframe"),
-                        text(idx == -1 ? "None" : names[idx]) | bold
-                        );
-                });
-    }
-
-    Component makeOutput3Text(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, const std::array<int, 3>& chosen) {
-        return Renderer([&] {
-                return window(
-                        text("Warframe (3)"),
                         vbox({
-                            text(chosen[0] == -1 ? "None" : names[chosen[0]]) | bold,
-                            text(chosen[1] == -1 ? "None" : names[chosen[1]]) | bold,
-                            text(chosen[2] == -1 ? "None" : names[chosen[2]]) | bold
+                            text(idx[0] == -1 ? "None" : names[idx[0]]) | bold,
+                            text(idx[1] == -1 ? "" : names[idx[1]]) | bold,
+                            text(idx[2] == -1 ? "" : names[idx[2]]) | bold
                             })
                         );
                 });
     }
+
 }

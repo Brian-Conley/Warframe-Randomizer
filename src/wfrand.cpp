@@ -11,7 +11,7 @@
 
 void toggleAllOff(std::array<bool, Warframes::WARFRAME_COUNT>& states);
 void toggleAllOn(std::array<bool, Warframes::WARFRAME_COUNT>& states);
-int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states);
+std::array<int, 3> randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states);
 std::array<int, 3> randomize3 (std::array<bool, Warframes::WARFRAME_COUNT>& states);
 
 int main() {
@@ -21,7 +21,6 @@ int main() {
     auto checklist = ComponentFactories::makeChecklist(state.warframeNames, state.checkedWarframes);
     auto controlHints = ComponentFactories::makeControlHints();
     auto output = ComponentFactories::makeOutputText(state.warframeNames, state.randomizedIndex);
-    auto output3 = ComponentFactories::makeOutput3Text(state.warframeNames, state.randomized3);
 
     auto screen = App::FitComponent();
 
@@ -32,8 +31,7 @@ int main() {
             vbox({
                 hbox({
                     controlHints->Render() | size(ftxui::WIDTH, ftxui::GREATER_THAN, 24),
-                    output->Render() | size(ftxui::WIDTH, GREATER_THAN, 18),
-                    output3->Render() | size(ftxui::WIDTH, GREATER_THAN, 18)
+                    output->Render() | size(ftxui::WIDTH, GREATER_THAN, 18)
                 }), //| size(ftxui::WIDTH, ftxui::GREATER_THAN, 60),
                 checklist->Render()
             })
@@ -43,7 +41,11 @@ int main() {
     auto root = CatchEvent(layout, [&](Event event) {
         if (event == Event::Character('r')) {
             state.randomizedIndex = randomize(state.checkedWarframes);
-            state.randomized3 = randomize3(state.checkedWarframes);
+            return true;
+        }
+
+        if (event == Event::Character('R')) {
+            state.randomizedIndex = randomize3(state.checkedWarframes);
             return true;
         }
 
@@ -182,7 +184,7 @@ void toggleAllOn(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
         states[i] = true;
 }
 
-int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
+std::array<int, 3> randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
     std::vector<int> enabledFrames = {};
     for (int i = 0; i < Warframes::WARFRAME_COUNT; ++i) {
         if (states[i]) {
@@ -191,14 +193,14 @@ int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
     }
 
     if (enabledFrames.size() == 0) {
-        return -1;
+        return { -1, -1, -1 };
     }
 
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, enabledFrames.size() - 1);
 
-    return enabledFrames[dist(gen)];
+    return { enabledFrames[dist(gen)], -1, -1 };
 }
 
 std::array<int, 3> randomize3 (std::array<bool, Warframes::WARFRAME_COUNT>& states) {

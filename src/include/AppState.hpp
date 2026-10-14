@@ -9,8 +9,7 @@ namespace AppState {
     struct AppState {
         std::array<std::string_view, Warframes::WARFRAME_COUNT> warframeNames;
         std::array<bool, Warframes::WARFRAME_COUNT> checkedWarframes;
-        int randomizedIndex;
-        std::array<int, 3> randomized3;
+        std::array<int, 3> randomizedIndex;
     };
 
     AppState makeDefault();
