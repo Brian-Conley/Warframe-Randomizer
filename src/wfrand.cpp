@@ -12,6 +12,7 @@
 void toggleAllOff(std::array<bool, Warframes::WARFRAME_COUNT>& states);
 void toggleAllOn(std::array<bool, Warframes::WARFRAME_COUNT>& states);
 int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states);
+std::array<int, 3> randomize3 (std::array<bool, Warframes::WARFRAME_COUNT>& states);
 
 int main() {
     using namespace ftxui;
@@ -20,6 +21,7 @@ int main() {
     auto checklist = ComponentFactories::makeChecklist(state.warframeNames, state.checkedWarframes);
     auto controlHints = ComponentFactories::makeControlHints();
     auto output = ComponentFactories::makeOutputText(state.warframeNames, state.randomizedIndex);
+    auto output3 = ComponentFactories::makeOutput3Text(state.warframeNames, state.randomized3);
 
     auto screen = App::FitComponent();
 
@@ -30,7 +32,8 @@ int main() {
             vbox({
                 hbox({
                     controlHints->Render() | size(ftxui::WIDTH, ftxui::GREATER_THAN, 24),
-                    output->Render() | size(ftxui::WIDTH, GREATER_THAN, 18)
+                    output->Render() | size(ftxui::WIDTH, GREATER_THAN, 18),
+                    output3->Render() | size(ftxui::WIDTH, GREATER_THAN, 18)
                 }), //| size(ftxui::WIDTH, ftxui::GREATER_THAN, 60),
                 checklist->Render()
             })
@@ -40,6 +43,7 @@ int main() {
     auto root = CatchEvent(layout, [&](Event event) {
         if (event == Event::Character('r')) {
             state.randomizedIndex = randomize(state.checkedWarframes);
+            state.randomized3 = randomize3(state.checkedWarframes);
             return true;
         }
 
@@ -195,4 +199,30 @@ int randomize(std::array<bool, Warframes::WARFRAME_COUNT>& states) {
     std::uniform_int_distribution<> dist(0, enabledFrames.size() - 1);
 
     return enabledFrames[dist(gen)];
+}
+
+std::array<int, 3> randomize3 (std::array<bool, Warframes::WARFRAME_COUNT>& states) {
+    std::vector<int> enabledFrames = {};
+    for (int i = 0; i < Warframes::WARFRAME_COUNT; ++i) {
+        if (states[i]) {
+            enabledFrames.push_back(i);
+        }
+    }
+
+    if (enabledFrames.size() < 3) {
+        return {-1, -1, -1};
+    }
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    std::array<int, 3> chosenFrames = {-1, -1, -1};
+    for (int i = 0; i < 3; ++i) {
+        std::uniform_int_distribution<> dist(0, enabledFrames.size() - 1);
+        int idx = dist(gen);
+        chosenFrames[i] = enabledFrames[idx];
+        enabledFrames.erase(enabledFrames.begin() + idx);
+    }
+
+    return chosenFrames;
 }

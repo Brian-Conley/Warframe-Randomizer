@@ -19,6 +19,7 @@ namespace AppState {
             state.checkedWarframes[i] = false;
 
         state.randomizedIndex = -1;
+        state.randomized3 = { -1, -1, -1 };
 
         return state;
     }
@@ -78,6 +79,7 @@ namespace AppState {
             return;
 
         state.randomizedIndex = -1;
+        state.randomized3 = { -1, -1, -1 };
         for (int i = 0; i < Warframes::WARFRAME_COUNT; ++i)
             state.checkedWarframes[i] = getBit(preset, i);
     }

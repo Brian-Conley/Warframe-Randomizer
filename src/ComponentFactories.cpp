@@ -51,4 +51,16 @@ namespace ComponentFactories {
                 });
     }
 
+    Component makeOutput3Text(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, const std::array<int, 3>& chosen) {
+        return Renderer([&] {
+                return window(
+                        text("Warframe (3)"),
+                        vbox({
+                            text(chosen[0] == -1 ? "None" : names[chosen[0]]) | bold,
+                            text(chosen[1] == -1 ? "None" : names[chosen[1]]) | bold,
+                            text(chosen[2] == -1 ? "None" : names[chosen[2]]) | bold
+                            })
+                        );
+                });
+    }
 }

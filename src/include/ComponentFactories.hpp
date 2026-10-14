@@ -15,4 +15,6 @@ namespace ComponentFactories {
 
     Component makeOutputText(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, int& idx);
 
+    Component makeOutput3Text(std::array<std::string_view, Warframes::WARFRAME_COUNT>& names, const std::array<int, 3>& idx);
+
 }
